@@ -8,7 +8,7 @@ export default function Header() {
 				<h1>React FoodOrder</h1>
 			</div>
 			<div>
-				<button class="button">
+				<button className="text-button">
 					Cart (0)
 				</button>
 			</div>
