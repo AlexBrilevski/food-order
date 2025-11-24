@@ -4,14 +4,14 @@ export default function Header() {
 	return (
 		<header id="main-header">
 			<div id="title">
-				<img src={logo} alt="Company logo" />
+				<img src={logo} alt="A restaurant" />
 				<h1>React FoodOrder</h1>
 			</div>
-			<div>
+			<nav>
 				<button className="text-button">
 					Cart (0)
 				</button>
-			</div>
+			</nav>
 		</header>
 	);
 }
