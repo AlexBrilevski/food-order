@@ -1,7 +1,19 @@
+import { useState, useEffect } from 'react';
 import Meal from './Meal';
 
 export default function Meals() {
-  const availableMeals = [{id: 'm0', image: 'images/mac-and-cheese.jpg', name: 'Meal name', description: 'Meal description', price: 10}];
+  const [availableMeals, setAvailableMeals] = useState([]);
+
+  useEffect(() => {
+    async function fetchAvailableMeals() {
+      const response = await fetch('http://localhost:3000/meals');
+      const mealsData = await response.json();
+      
+      setAvailableMeals(mealsData);
+    }
+
+    fetchAvailableMeals();
+  }, []);
 
   return (
     <section>
