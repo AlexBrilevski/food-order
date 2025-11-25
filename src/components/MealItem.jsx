@@ -1,6 +1,6 @@
-export default function Meal({ id, image, name, description, price }) {
+export default function MealItem({ id, image, name, description, price }) {
   return (
-    <div className="meal-item">
+    <li className="meal-item">
       <article>
         <img src={`http://localhost:3000/${image}`} alt={name} />
         <div>
@@ -18,6 +18,6 @@ export default function Meal({ id, image, name, description, price }) {
           </button>
         </p>
       </article>
-    </div>
+    </li>
   );
 }
