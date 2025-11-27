@@ -4,6 +4,8 @@ import { CART_ACTION_TYPE, initCartState, cartReduser } from "./cartReducer.js";
 const CartContex = createContext({
   items: [],
   addToCart: (item) => { },
+  updateItemQuantity: (id) => { },
+  removeItem: (id) => { },
 });
 
 export function CartContexProvider({ children }) {
@@ -13,9 +15,19 @@ export function CartContexProvider({ children }) {
     dispatchCartAction({ type: CART_ACTION_TYPE.addItem, payload: item });
   };
 
+  const updateItemQuantity = (id) => {
+    dispatchCartAction({ type: CART_ACTION_TYPE.removeItem, payload: id });
+  };
+
+  const removeItem = (id) => {
+    dispatchCartAction({ type: CART_ACTION_TYPE.removeItem, payload: id });
+  };
+
   const cartCtx = {
     items: cartState.items,
     addToCart,
+    updateItemQuantity,
+    removeItem,
   }
 
   console.log(cartState);
