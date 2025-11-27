@@ -8,7 +8,7 @@ export const initCartState = {
   items: [],
 };
 
-export const cartReduser = (state = initCartState, action) => {
+export const cartReducer = (state = initCartState, action) => {
   switch (action.type) {
     case CART_ACTION_TYPE.addItem: {
       let updatedItems = [...state.items];
