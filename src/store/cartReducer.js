@@ -22,10 +22,10 @@ export const cartReduser = (state = initCartState, action) => {
       return { ...state, items: updatedItems };
     }
     case CART_ACTION_TYPE.updateQuantity: {
-      return { ...state, items: updatedItems };
+      return { ...state };
     }
     case CART_ACTION_TYPE.removeItem: {
-      return { ...state, items: updatedItems };
+      return { ...state, items: state.items.filter(item => item.id !== action.payload) };
     }
     default: {
       return state;
