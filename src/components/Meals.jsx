@@ -17,7 +17,7 @@ export default function Meals() {
 
   return (
     <ul id="meals">
-      {availableMeals.map(meal => <MealItem key={meal.id} {...meal} />)}
+      {availableMeals.map(meal => <MealItem key={meal.id} item={meal} />)}
     </ul>
   );
 }
