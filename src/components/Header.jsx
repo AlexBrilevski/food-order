@@ -1,7 +1,11 @@
+import { use } from 'react';
+import CartContex from '../store/CartContext.jsx';
 import logo from '../assets/logo.jpg';
 import Button from './ui/Button.jsx';
 
 export default function Header() {
+  const { items } = use(CartContex);
+
   return (
     <header id="main-header">
       <div id="title">
@@ -10,7 +14,7 @@ export default function Header() {
       </div>
       <nav>
         <Button textOnly>
-          Cart (0)
+          Cart ({items.length})
         </Button>
       </nav>
     </header>
