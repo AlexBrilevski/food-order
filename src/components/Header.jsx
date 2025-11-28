@@ -8,11 +8,11 @@ export default function Header() {
   const { items } = use(CartContex);
   const modal = useRef();
 
-  const cartQuantity = items.length;
+  const itemsInCart = items.reduce((totalItems, item) => totalItems + item.quantity, 0);
 
   let modalActions = <Button>Close</Button>;
 
-  if (cartQuantity) {
+  if (itemsInCart) {
     modalActions = (
       <>
         <Button>Close</Button>
@@ -34,7 +34,7 @@ export default function Header() {
         </div>
         <nav>
           <Button textOnly onClick={openCart}>
-            Cart ({cartQuantity})
+            Cart ({itemsInCart})
           </Button>
         </nav>
       </header>
