@@ -1,28 +1,25 @@
-import { use, useRef } from 'react';
+import { use, useState } from 'react';
 import CartContex from '../store/CartContext.jsx';
 import logo from '../assets/logo.jpg';
 import Button from './ui/Button.jsx';
-import CartModal from './CartModal.jsx';
+import CartModal from './Modal.jsx';
+import Cart from './Cart.jsx';
 
 export default function Header() {
   const { items } = use(CartContex);
-  const modal = useRef();
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const itemsInCart = items.reduce((totalItems, item) => totalItems + item.quantity, 0);
 
-  let modalActions = <Button>Close</Button>;
+  let cartModalActions = <Button onClick={() => setIsCartOpen(false)}>Close</Button>;
 
   if (itemsInCart) {
-    modalActions = (
+    cartModalActions = (
       <>
-        <Button>Close</Button>
+        <Button onClick={() => setIsCartOpen(false)}>Close</Button>
         <Button>Checkout</Button>
       </>
     );
-  }
-
-  function openCart() {
-    modal.current.open();
   }
 
   return (
@@ -33,12 +30,17 @@ export default function Header() {
           <h1>React FoodOrder</h1>
         </div>
         <nav>
-          <Button textOnly onClick={openCart}>
+          <Button textOnly onClick={() => setIsCartOpen(true)}>
             Cart ({itemsInCart})
           </Button>
         </nav>
       </header>
-      <CartModal ref={modal} actions={modalActions} />
+      <CartModal open={isCartOpen}>
+        <Cart />
+        <form className="modal-actions" method="dialog">
+          {cartModalActions}
+        </form>
+      </CartModal>
     </>
   );
 }
