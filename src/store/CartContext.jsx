@@ -15,8 +15,8 @@ export function CartContexProvider({ children }) {
     dispatchCartAction({ type: CART_ACTION_TYPE.addItem, payload: item });
   };
 
-  const updateItemQuantity = (id) => {
-    dispatchCartAction({ type: CART_ACTION_TYPE.removeItem, payload: id });
+  const updateItemQuantity = (updateType, id) => {
+    dispatchCartAction({ type: CART_ACTION_TYPE.updateQuantity, payload: { updateType, id } });
   };
 
   const removeItem = (id) => {

@@ -4,7 +4,7 @@ import Button from "./ui/Button";
 import { currencyFormatter } from "../utils/formatting";
 
 export default function Cart() {
-  const { items } = useContext(CartContex);
+  const { items, updateItemQuantity } = useContext(CartContex);
 
   const cartTotal = items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
@@ -18,9 +18,9 @@ export default function Cart() {
               <li key={item.id} className="cart-item">
                 <p>{item.name}</p>
                 <p className="cart-item-actions">
-                  <Button textOnly>-</Button>
+                  <Button textOnly onClick={() => updateItemQuantity('decrease', item.id)}>-</Button>
                   <span>{item.quantity}</span>
-                  <Button textOnly>+</Button>
+                  <Button textOnly onClick={() => updateItemQuantity('increase', item.id)}>+</Button>
                 </p>
               </li>
             )}

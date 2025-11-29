@@ -22,7 +22,23 @@ export const cartReducer = (state = initCartState, action) => {
       return { ...state, items: updatedItems };
     }
     case CART_ACTION_TYPE.updateQuantity: {
-      return { ...state };
+      let updatedItems = [...state.items];
+
+      if (action.payload.updateType === 'increase') {
+        updatedItems = updatedItems.map(item => item.id === action.payload.id ? { ...item, quantity: item.quantity++ } : item);
+      }
+
+      if (action.payload.updateType === 'decrease') {
+        const updatedItemIndex = updatedItems.findIndex(item => item.id === action.payload.id);
+        const updatedItem = { ...updatedItems[updatedItemIndex] };
+
+        if (updatedItem.quantity === 1) {
+          updatedItems = updatedItems.filter(item => item.id !== action.payload.id);
+        } else {
+          updatedItems = updatedItems.map(item => item.id === action.payload.id ? { ...item, quantity: item.quantity-- } : item);
+        }
+      }
+      return { ...state, items: updatedItems };
     }
     case CART_ACTION_TYPE.removeItem: {
       return { ...state, items: state.items.filter(item => item.id !== action.payload) };
