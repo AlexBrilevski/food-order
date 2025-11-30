@@ -1,26 +1,14 @@
-import { use, useState } from 'react';
+import { use } from 'react';
 import CartContex from '../store/CartContext.jsx';
 import logo from '../assets/logo.jpg';
 import Button from './ui/Button.jsx';
-import CartModal from './Modal.jsx';
-import Cart from './Cart.jsx';
+import UserProgressContex from '../store/UserProgressContex.jsx';
 
 export default function Header() {
   const { items } = use(CartContex);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { showCart } = use(UserProgressContex);
 
   const itemsInCart = items.reduce((totalItems, item) => totalItems + item.quantity, 0);
-
-  let cartModalActions = <Button onClick={() => setIsCartOpen(false)}>Close</Button>;
-
-  if (itemsInCart) {
-    cartModalActions = (
-      <>
-        <Button onClick={() => setIsCartOpen(false)}>Close</Button>
-        <Button>Checkout</Button>
-      </>
-    );
-  }
 
   return (
     <>
@@ -30,17 +18,11 @@ export default function Header() {
           <h1>React FoodOrder</h1>
         </div>
         <nav>
-          <Button textOnly onClick={() => setIsCartOpen(true)}>
+          <Button textOnly onClick={() => showCart()}>
             Cart ({itemsInCart})
           </Button>
         </nav>
       </header>
-      <CartModal open={isCartOpen}>
-        <Cart />
-        <form className="modal-actions" method="dialog">
-          {cartModalActions}
-        </form>
-      </CartModal>
     </>
   );
 }
