@@ -4,6 +4,7 @@ import UserProgressContex from "../store/UserProgressContex";
 import Modal from "./ui/Modal";
 import Button from "./ui/Button";
 import { currencyFormatter } from "../utils/formatting";
+import CartItem from "./CartItem";
 
 export default function Cart() {
   const { items, updateItemQuantity, removeItem } = useContext(CartContex);
@@ -17,17 +18,15 @@ export default function Cart() {
       {items.length > 0 ?
         <>
           <ul>
-            {items.map(item =>
-              <li key={item.id} className="cart-item">
-                <p>{item.name}</p>
-                <p className="cart-item-actions">
-                  <Button textOnly onClick={() => updateItemQuantity('decrease', item.id)}>-</Button>
-                  <span>{item.quantity}</span>
-                  <Button textOnly onClick={() => updateItemQuantity('increase', item.id)}>+</Button>
-                  <Button textOnly onClick={() => removeItem(item.id)}>X</Button>
-                </p>
-              </li>
-            )}
+            {items.map(item => (
+              <CartItem
+                key={item.id}
+                {...item}
+                onDecrease={() => updateItemQuantity('decrease', item.id)}
+                onIncrease={() => updateItemQuantity('increase', item.id)}
+                onRemove={() => removeItem(item.id)}
+              />
+            ))}
           </ul>
           <p className="cart-total">Total: {currencyFormatter.format(cartTotal)}</p>
         </>
