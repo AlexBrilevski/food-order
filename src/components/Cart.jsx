@@ -13,7 +13,11 @@ export default function Cart() {
   const cartTotal = items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
   return (
-    <Modal open={progress === 'cart'} className="cart">
+    <Modal
+      open={progress === 'cart'}
+      className="cart"
+      onClose={progress === 'cart' ? hideCart : null}
+    >
       <h2>Your cart</h2>
       {items.length > 0 ?
         <>

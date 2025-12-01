@@ -13,7 +13,7 @@ export default function Checkout() {
   const totalAmount = items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
   return (
-    <Modal open={progress === 'checkout'}>
+    <Modal open={progress === 'checkout'} onClose={hideCheckout}>
       <form>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(totalAmount)}</p>
