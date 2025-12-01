@@ -12,11 +12,6 @@ export default function Cart() {
 
   const cartTotal = items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
-  function onCheckoutClick() {
-    hideCart();
-    showCheckout();
-  }
-
   return (
     <Modal open={progress === 'cart'} className="cart">
       <h2>Your cart</h2>
@@ -39,8 +34,14 @@ export default function Cart() {
         <p>No items in the cart</p>
       }
       <div className="modal-actions">
-        <Button textOnly onClick={() => hideCart()}>Close</Button>
-        {items.length > 0 && <Button onClick={onCheckoutClick}>Go to Checkout</Button>}
+        <Button textOnly onClick={hideCart}>
+          Close
+        </Button>
+        {items.length > 0 && (
+          <Button onClick={showCheckout}>
+            Go to Checkout
+          </Button>
+        )}
       </div>
     </Modal>
   );
