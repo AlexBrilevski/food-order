@@ -17,6 +17,12 @@ export default function Checkout() {
 
     const formData = new FormData(e.target);
     const fieldValues = Object.fromEntries(formData.entries());
+    const { ['full-name']: fullName, email, street, ['postal-code']: postaCode, city } = fieldValues;
+
+    if (fullName.length < 4 || street.length < 4 || postaCode.length < 4 || city.length < 4) {
+      console.log('Input errors', fullName, street, postaCode, city);
+      return;
+    }
 
     console.log(fieldValues);
   }
