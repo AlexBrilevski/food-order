@@ -12,9 +12,18 @@ export default function Checkout() {
 
   const totalAmount = items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
+  function onCheckoutFormSumbit(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const fieldValues = Object.fromEntries(formData.entries());
+
+    console.log(fieldValues);
+  }
+
   return (
     <Modal open={progress === 'checkout'} onClose={hideCheckout}>
-      <form>
+      <form onSubmit={onCheckoutFormSumbit}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(totalAmount)}</p>
         <Input id="full-name" label="Full Name" type="text" required />
@@ -28,7 +37,7 @@ export default function Checkout() {
           <Button onClick={() => hideCheckout()} type="buton" textOnly>
             Close
           </Button>
-          <Button onClick={() => { }}>
+          <Button>
             Submit Order
           </Button>
         </p>
