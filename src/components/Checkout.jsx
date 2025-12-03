@@ -12,19 +12,33 @@ export default function Checkout() {
 
   const totalAmount = items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
+  async function sendOrderData(order) {
+    console.log(order);
+    const response = await fetch('http://localhost:3000/orders', {
+      method: 'POST',
+      body: JSON.stringify({ order }),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    const respData = await response.json();
+
+    console.log(respData);
+  }
+
   function onCheckoutFormSumbit(e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     const fieldValues = Object.fromEntries(formData.entries());
-    const { ['full-name']: fullName, email, street, ['postal-code']: postaCode, city } = fieldValues;
+    const { name, email, street, ['postal-code']: postaCode, city } = fieldValues;
 
-    if (fullName.length < 4 || street.length < 4 || postaCode.length < 4 || city.length < 4) {
-      console.log('Input errors', fullName, street, postaCode, city);
+    if (name.length < 4 || street.length < 4 || postaCode.length < 4 || city.length < 4) {
+      console.log('Input errors', fullName, email, street, postaCode, city);
       return;
     }
 
-    console.log(fieldValues);
+    sendOrderData({ customer: fieldValues, items });
   }
 
   return (
@@ -32,7 +46,7 @@ export default function Checkout() {
       <form onSubmit={onCheckoutFormSumbit}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(totalAmount)}</p>
-        <Input id="full-name" label="Full Name" type="text" required />
+        <Input id="name" label="Full Name" type="text" required />
         <Input id="email" label="E-mail Address" type="email" required />
         <Input id="street" label="Street" type="text" required />
         <div className="control-row">
