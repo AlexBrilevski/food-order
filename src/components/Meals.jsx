@@ -18,6 +18,10 @@ export default function Meals() {
     return <p className="center">No available meals found.</p>;
   }
 
+  if (error) {
+    return <p className="center">{error}</p>;
+  }
+
   return (
     <ul id="meals">
       {availableMeals.map(meal => <MealItem key={meal.id} item={meal} />)}
