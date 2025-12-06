@@ -28,13 +28,10 @@ export default function Checkout() {
 
   const totalAmount = items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
-  function onCheckoutFormSumbit(e) {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
+  async function checkoutAction(formData) {
     const fieldValues = Object.fromEntries(formData.entries());
 
-    sendRequest(JSON.stringify({ order: { customer: fieldValues, items } }));
+    await sendRequest(JSON.stringify({ order: { customer: fieldValues, items } }));
   }
 
   function onCloseOrderConfirmation() {
@@ -75,7 +72,7 @@ export default function Checkout() {
 
   return (
     <Modal open={progress === 'checkout'} onClose={hideCheckout}>
-      <form onSubmit={onCheckoutFormSumbit}>
+      <form action={checkoutAction}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(totalAmount)}</p>
         <Input id="name" label="Full Name" type="text" required />
