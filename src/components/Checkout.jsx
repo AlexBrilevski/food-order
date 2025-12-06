@@ -61,8 +61,9 @@ export default function Checkout() {
   if (data && !error) {
     return (
       <Modal open={progress === 'checkout'} onClose={onCloseOrderConfirmation}>
-        <h2>Thank you! Your order has been submitted</h2>
-        <p>We'll get back to you with more details via email in a few minutes.</p>
+        <h2>Thank you!</h2>
+        <p>Your order has been submitted successfully.</p>
+        <p>We'll get back to you with more details via email within next few minutes.</p>
         <p className="modal-actions">
           <Button onClick={onCloseOrderConfirmation}>
             Ok
