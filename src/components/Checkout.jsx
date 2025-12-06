@@ -5,40 +5,70 @@ import CartContex from "../store/CartContext";
 import UserProgressContex from "../store/UserProgressContex";
 import { currencyFormatter } from "../utils/formatting";
 import Input from "./ui/Input";
+import useHttp from "../hooks/useHttp";
+import Error from "./Error";
+
+const requestConfig = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 
 export default function Checkout() {
   const { items } = useContext(CartContex);
   const { progress, hideCheckout } = useContext(UserProgressContex);
+  const {
+    data,
+    isLoading,
+    error,
+    sendRequest,
+    clearData,
+  } = useHttp('http://localhost:3000/orders', requestConfig);
 
   const totalAmount = items.reduce((total, item) => total + (item.price * item.quantity), 0);
-
-  async function sendOrderData(order) {
-    console.log(order);
-    const response = await fetch('http://localhost:3000/orders', {
-      method: 'POST',
-      body: JSON.stringify({ order }),
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    const respData = await response.json();
-
-    console.log(respData);
-  }
 
   function onCheckoutFormSumbit(e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     const fieldValues = Object.fromEntries(formData.entries());
-    const { name, email, street, ['postal-code']: postaCode, city } = fieldValues;
 
-    if (name.length < 4 || street.length < 4 || postaCode.length < 4 || city.length < 4) {
-      console.log('Input errors', fullName, email, street, postaCode, city);
-      return;
-    }
+    sendRequest(JSON.stringify({ order: { customer: fieldValues, items } }));
+  }
 
-    sendOrderData({ customer: fieldValues, items });
+  function onCloseOrderConfirmation() {
+    hideCheckout();
+    clearData();
+  }
+
+  let actions = (
+    <>
+      <Button onClick={hideCheckout} type="buton" textOnly>
+        Close
+      </Button>
+      <Button>
+        Submit Order
+      </Button>
+    </>
+  );
+
+  if (isLoading) {
+    actions = <span>Submitting your order...</span>;
+  }
+
+  if (data && !error) {
+    return (
+      <Modal open={progress === 'checkout'} onClose={onCloseOrderConfirmation}>
+        <h2>Thank you! Your order has been submitted</h2>
+        <p>We'll get back to you with more details via email in few minutes.</p>
+        <p className="modal-actions">
+          <Button onClick={onCloseOrderConfirmation}>
+            Ok
+          </Button>
+        </p>
+      </Modal>
+    );
   }
 
   return (
@@ -53,13 +83,11 @@ export default function Checkout() {
           <Input id="postal-code" label="Postal Code" type="text" required />
           <Input id="city" label="City" type="text" required />
         </div>
+
+        {error && <Error title="Failed to submit order" message={error} />}
+
         <p className="modal-actions">
-          <Button onClick={() => hideCheckout()} type="buton" textOnly>
-            Close
-          </Button>
-          <Button>
-            Submit Order
-          </Button>
+          {actions}
         </p>
       </form>
     </Modal>
