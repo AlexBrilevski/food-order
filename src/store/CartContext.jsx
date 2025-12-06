@@ -6,6 +6,7 @@ const CartContex = createContext({
   addToCart: (item) => { },
   updateItemQuantity: (id) => { },
   removeItem: (id) => { },
+  clearCart: () => { },
 });
 
 export function CartContexProvider({ children }) {
@@ -23,11 +24,16 @@ export function CartContexProvider({ children }) {
     dispatchCartAction({ type: CART_ACTION_TYPE.removeItem, payload: id });
   };
 
+  const clearCart = () => {
+    dispatchCartAction({ type: CART_ACTION_TYPE.clearCart });
+  };
+
   const cartCtx = {
     items: cartState.items,
     addToCart,
     updateItemQuantity,
     removeItem,
+    clearCart,
   }
 
   console.log(cartState);

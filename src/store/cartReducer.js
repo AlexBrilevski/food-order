@@ -2,6 +2,7 @@ export const CART_ACTION_TYPE = {
   addItem: 'ADD_ITEM',
   updateQuantity: 'UPDATE_QUANTITY',
   removeItem: 'REMOVE_ITEM',
+  clearCart: 'CLEAR_CART',
 };
 
 export const initCartState = {
@@ -42,6 +43,9 @@ export const cartReducer = (state = initCartState, action) => {
     }
     case CART_ACTION_TYPE.removeItem: {
       return { ...state, items: state.items.filter(item => item.id !== action.payload) };
+    }
+    case CART_ACTION_TYPE.clearCart: {
+      return {...state, items: []};
     }
     default: {
       return state;

@@ -16,7 +16,7 @@ const requestConfig = {
 };
 
 export default function Checkout() {
-  const { items } = useContext(CartContex);
+  const { items, clearCart } = useContext(CartContex);
   const { progress, hideCheckout } = useContext(UserProgressContex);
   const {
     data,
@@ -40,6 +40,7 @@ export default function Checkout() {
   function onCloseOrderConfirmation() {
     hideCheckout();
     clearData();
+    clearCart();
   }
 
   let actions = (
@@ -61,7 +62,7 @@ export default function Checkout() {
     return (
       <Modal open={progress === 'checkout'} onClose={onCloseOrderConfirmation}>
         <h2>Thank you! Your order has been submitted</h2>
-        <p>We'll get back to you with more details via email in few minutes.</p>
+        <p>We'll get back to you with more details via email in a few minutes.</p>
         <p className="modal-actions">
           <Button onClick={onCloseOrderConfirmation}>
             Ok
