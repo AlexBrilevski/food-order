@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useActionState } from "react";
 import Modal from "./ui/Modal";
 import Button from "./ui/Button";
 import CartContex from "../store/CartContext";
@@ -20,7 +20,6 @@ export default function Checkout() {
   const { progress, hideCheckout } = useContext(UserProgressContex);
   const {
     data,
-    isLoading,
     error,
     sendRequest,
     clearData,
@@ -28,7 +27,7 @@ export default function Checkout() {
 
   const totalAmount = items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
-  async function checkoutAction(formData) {
+  async function checkoutAction(prevState, formData) {
     const fieldValues = Object.fromEntries(formData.entries());
 
     await sendRequest(JSON.stringify({ order: { customer: fieldValues, items } }));
@@ -39,6 +38,8 @@ export default function Checkout() {
     clearData();
     clearCart();
   }
+
+  const [formState, formAction, isLoading] = useActionState(checkoutAction, null);
 
   let actions = (
     <>
@@ -52,7 +53,7 @@ export default function Checkout() {
   );
 
   if (isLoading) {
-    actions = <span>Submitting your order...</span>;
+    actions = <span>Processing order...</span>;
   }
 
   if (data && !error) {
@@ -72,7 +73,7 @@ export default function Checkout() {
 
   return (
     <Modal open={progress === 'checkout'} onClose={hideCheckout}>
-      <form action={checkoutAction}>
+      <form action={formAction}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(totalAmount)}</p>
         <Input id="name" label="Full Name" type="text" required />
