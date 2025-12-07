@@ -32,11 +32,12 @@ export const cartReducer = (state = initCartState, action) => {
       if (action.payload.updateType === 'decrease') {
         const updatedItemIndex = updatedItems.findIndex(item => item.id === action.payload.id);
         const updatedItem = { ...updatedItems[updatedItemIndex] };
+        const decreasedQuantity = updatedItem.quantity - 1;
 
-        if (updatedItem.quantity === 1) {
+        if (decreasedQuantity === 0) {
           updatedItems = updatedItems.filter(item => item.id !== action.payload.id);
         } else {
-          updatedItems = updatedItems.map(item => item.id === action.payload.id ? { ...item, quantity: item.quantity-- } : item);
+          updatedItems = updatedItems.map(item => item.id === action.payload.id ? { ...item, quantity: decreasedQuantity } : item);
         }
       }
       return { ...state, items: updatedItems };
